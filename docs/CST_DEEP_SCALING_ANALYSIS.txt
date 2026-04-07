@@ -1,0 +1,129 @@
+======================================================================
+ANALISI 1: PERCHÉ v_max = V_flat?
+======================================================================
+
+Domanda: perché la velocità massima del vortice è uguale alla velocità
+piatta della galassia?
+
+Risposta fisica: a grandi raggi (r >> r_c), il profilo Lamb-Oseen decade
+come v_vortex ~ v_max × r_c / r. I barioni pure decadono. La velocità
+osservata diventa dominata dal vortice. In equilibrio:
+
+   V_flat ≈ v_vortex(r_grande) ≈ v_max × (r_c/r) × costante
+
+Ma V_flat è PIATTA per definizione — non decade. Questo funziona solo
+se il vortice a grandi raggi ha esattamente il profilo giusto.
+
+Verifichiamo: a che raggio il vortice domina?
+
+  NGC2403     : Vf=  131, Rd=1.39, rc=9.9 kpc
+               Vortice è 75% della v² totale al bordo esterno
+  NGC3198     : Vf=  150, Rd=3.14, rc=22.5 kpc
+               Vortice è 74% della v² totale al bordo esterno
+  NGC2841     : Vf=  285, Rd=3.64, rc=26.0 kpc
+               Vortice è 71% della v² totale al bordo esterno
+  DDO154      : Vf=   47, Rd=0.37, rc=2.6 kpc
+               Vortice è 78% della v² totale al bordo esterno
+  NGC0055     : Vf=   86, Rd=6.11, rc=43.7 kpc
+               Vortice è 34% della v² totale al bordo esterno
+  NGC4559     : Vf=  121, Rd=2.10, rc=15.0 kpc
+               Vortice è 70% della v² totale al bordo esterno
+
+
+======================================================================
+ANALISI 2: PERCHÉ r_c ≈ 7 × R_disk?
+======================================================================
+
+Il disco esponenziale stellare ha densità Σ(r) = Σ_0 × exp(-r/R_disk).
+A r = 7 × R_disk, la densità è exp(-7) ≈ 0.001 della centrale.
+
+Questo è il raggio dove la materia barionica è essenzialmente finita.
+Il vortice ha il suo core (picco di velocità) PROPRIO dove finiscono
+i barioni — come se il mulinello "cominciasse" dove la materia "finisce".
+
+Fisicamente ha senso: il vortice è generato dal BH centrale, ma dentro
+al disco la materia barionica domina la gravità. Il vortice "emerge"
+solo dove i barioni non dominano più. Il core del vortice segna il 
+confine di transizione tra gravità barionica e gravità del vortice.
+
+Verifichiamo numericamente:
+
+  Galassia        Rd     rc  rc/Rd │ v_bar(rc) v_vort(rc) %vortice
+  ──────────────────────────────────────────────────────────────────────
+  UGC02487      7.89   56.4    7.2 │     171.9      327.6      78%
+  ESO563-G021   5.45   39.0    7.2 │     168.3      311.7      77%
+  NGC5985       7.01   50.1    7.1 │     153.6      253.1      73%
+  UGC02885     11.40   81.5    7.2 │     160.2      280.6      75%
+  UGC11914      2.44   17.4    7.2 │     211.8      217.9      51%
+  NGC2841       3.64   26.0    7.2 │     163.6      283.1      75%
+  UGC11455      5.93   42.4    7.2 │     169.0      266.3      71%
+  UGC02953      3.55   25.4    7.2 │     180.0      262.1      68%
+  NGC5005       9.45   67.6    7.2 │     222.1       68.7       9%
+  NGC6195      13.94   99.7    7.2 │     191.6      134.9      33%
+  UGC06787      5.37   38.4    7.2 │      99.6      244.3      86%
+  IC4202        4.78   34.2    7.2 │     163.2      219.2      64%
+  NGC6674       6.04   43.2    7.2 │     134.4      238.2      76%
+  NGC3992       4.96   35.5    7.1 │     144.5      239.9      73%
+  NGC7331       5.02   35.9    7.2 │     149.4      237.2      72%
+  UGC12506      7.38   52.8    7.2 │     128.5      229.3      76%
+  UGC09133      6.97   49.8    7.2 │     143.6      224.6      71%
+  NGC3953       4.89   35.0    7.1 │     175.4      140.6      39%
+  NGC0801       8.72   62.3    7.2 │     143.7      216.3      69%
+  UGC03205      3.19   22.8    7.2 │     140.2      215.5      70%
+
+
+======================================================================
+ANALISI 3: IL NUMERO 7.15 CAMBIA CON IL TIPO DI GALASSIA?
+======================================================================
+  Tipo  0 ( S0): C =   4.65  (N= 3 galassie)
+  Tipo  1 ( Sa): C =  10.27  (N= 3 galassie)
+  Tipo  2 (Sab): C =   6.94  (N= 9 galassie)
+  Tipo  3 ( Sb): C =   7.49  (N=11 galassie)
+  Tipo  4 (Sbc): C =   8.74  (N=17 galassie)
+  Tipo  5 ( Sc): C =   6.38  (N=14 galassie)
+  Tipo  6 (Scd): C =   8.05  (N=16 galassie)
+  Tipo  7 ( Sd): C =   4.15  (N=14 galassie)
+  Tipo  8 (Sdm): C =   3.80  (N= 6 galassie)
+  Tipo  9 ( Sm): C =   3.94  (N=19 galassie)
+  Tipo 10 ( Im): C =   5.71  (N=16 galassie)
+
+Se C è circa lo stesso per tutti i tipi → il rapporto rc/Rd è UNIVERSALE.
+Se varia molto → dipende dalla struttura della galassia.
+
+
+======================================================================
+ANALISI 4: GALASSIE DOVE IL MODELLO 1-PARAM FUNZIONA BENE vs MALE
+======================================================================
+
+  TOP 10 (modello funziona MEGLIO):
+  Galassia     Tipo    Vf    Rd   RMSE RMSE_bar   Imp
+  UGC07603       Sd    62  0.53    4.6     31.5   6.8x
+  NGC5585        Sd    90  1.53    5.1     31.7   6.2x
+  KK98-251       Im    34  1.34    5.3      9.2   1.7x
+  NGC2976        Sc    85  1.01    5.4     14.3   2.7x
+  UGC08550       Sd    57  0.45    5.5     29.6   5.4x
+  UGC06818       Sm    71  1.39    5.5     27.1   4.9x
+  UGC09992       Im    34  1.04    5.8     11.2   1.9x
+  NGC0100       Scd    88  1.66    6.0     37.3   6.3x
+  UGC05005       Im    99  3.20    6.0     39.7   6.7x
+  DDO170         Im    60  1.95    6.6     27.3   4.1x
+
+  BOTTOM 10 (modello funziona PEGGIO):
+  NGC5985        Sb   294  7.01   76.9    136.5   1.8x
+  NGC4217        Sb   181  2.94   58.8     47.9   0.8x
+  UGC12506      Scd   234  7.38   53.9    116.0   2.2x
+  NGC0891        Sb   216  2.55   51.8     42.5   0.8x
+  UGC02487       S0   332  7.89   51.1    167.9   3.3x
+  NGC4088       Sbc   172  2.58   47.2     25.4   0.5x
+  UGC03546       Sa   197  3.79   46.1     52.0   1.1x
+  UGC06667      Scd    84  5.15   41.5     48.8   1.2x
+  NGC2841        Sb   285  3.64   40.6    130.5   3.2x
+  NGC7331        Sb   239  5.02   39.3     59.4   1.5x
+
+
+======================================================================
+ANALISI 5: QUANTO PERDIAMO CON 1 PARAMETRO vs 258?
+======================================================================
+  Galassie dove il modello 1-param è quasi uguale al 2-param (<20% peggio): 27
+  Galassie dove il modello 1-param è sensibilmente peggio (>20%): 96
+  Percentuale 'quasi uguale': 22%

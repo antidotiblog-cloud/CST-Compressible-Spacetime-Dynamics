@@ -1,0 +1,89 @@
+======================================================================
+RIPENSAMENTO COMPLETO: Ψ AMPLIFICA O FRENA?
+======================================================================
+
+  Michele dice: le stelle FRENANO il vortice.
+  Ma la nostra Ψ AMPLIFICA il vortice dove ci sono stelle.
+  Questi sono OPPOSTI.
+  
+  Forse la Ψ sta compensando il fatto che usiamo v_max = V_flat,
+  che è GIÀ il valore FRENATO. In altre parole:
+  
+  V_flat (osservato) = V_vortice_puro × (fattore frenamento)
+  
+  E la Ψ sta RICOSTRUENDO il vortice puro partendo da V_flat.
+  
+  Riformulazione corretta:
+  
+  1. Il BH genera un vortice puro con V_vortice > V_flat
+  2. Le stelle lo frenano: V_flat = V_vortice × frenamento
+  3. Al centro dove le stelle sono dense, il frenamento è forte
+  4. Alla periferia dove le stelle sono poche, il frenamento è debole
+  
+  Quindi il vortice REALE è:
+  v_vort(r) = V_puro × LO(r/rc) × frenamento(r)
+  
+  dove frenamento(r) = M_BH / (M_BH + η × M_bar(<r))
+  e V_puro > V_flat (la potenza INTRINSECA del BH)
+
+
+────────────────────────────────────────────────────────────
+VERIFICA: v_max individuale vs V_flat
+────────────────────────────────────────────────────────────
+  Mediana v_max_ind / V_flat = 0.898
+  Media v_max_ind / V_flat = 0.908
+  v_max > V_flat: 7 galassie (6%)
+  v_max < V_flat: 93 galassie (76%)
+  v_max ≈ V_flat: 23 galassie (19%)
+
+  Per tipo morfologico:
+  Tipo   N med(vm/Vf)                Interpretazione
+    S0   3      0.929                  frenato al 7%
+    Sa   3      0.889                 frenato al 11%
+   Sab   9      0.848                 frenato al 15%
+    Sb   9      0.939                  frenato al 6%
+   Sbc  14      0.812                 frenato al 19%
+    Sc  13      0.853                 frenato al 15%
+   Scd  16      0.901                 frenato al 10%
+    Sd  14      0.909                  frenato al 9%
+   Sdm   6      0.923                  frenato al 8%
+    Sm  19      0.909                  frenato al 9%
+    Im  16      0.898                 frenato al 10%
+
+
+============================================================
+MODELLO K: V_puro = A × V_flat, poi frenato localmente
+============================================================
+Grid search Model K (3 param)...
+
+  V_puro = 0.970 × V_flat
+  v_vort(r) = V_puro × [M_BH/(M_BH + 0.00002 × M_bar(<r))] × LO(r/6.4Rd)
+  Parametri: 3 (C, A, η)
+  RMSE = 24.57 km/s (2.52x)
+
+────────────────────────────────────────────────────────────
+MODELLO L: V_puro + frenamento + Ψ binaria (5 param)
+────────────────────────────────────────────────────────────
+Grid search Model L...
+
+  V_puro = 0.674 × V_flat
+  Frenamento: M_BH / (M_BH + 0.00000 × M_bar(<r))
+  Ψ residua = 1 + 38.5 × [4q/(1+q)²]^0.62 × (M_BH/10⁷)^(2/3)
+  r_c = 6.6 × Rd
+  Parametri: 5
+  RMSE = 23.23 km/s (2.67x)
+  → η → 0: il frenamento è assorbito dalla Ψ
+
+============================================================
+TABELLA RIASSUNTIVA
+============================================================
+
+  Modello                          Par  RMSE   Migl.
+  ─────────────────────────────────────────────────────
+  Solo barioni                      0   61.9   1.0x
+  MOND                              1   ~25     ~2.5x
+  K: V_puro + frenamento locale     3   24.6   2.5x
+  G: Ψ interferenza (senza freno)   5   20.0    3.1x
+  L: V_puro + freno + Ψ            5   23.2   2.7x
+  Fit individuale                 258   18.4    3.4x
+

@@ -1,0 +1,146 @@
+======================================================================
+MODELLO CST CON FUNZIONE PESO STELLARE
+(Analogia con l'interferenza delle binarie)
+======================================================================
+
+  BINARIE: Ψ = 1 + γ₀ M^η [4q/(1+q)²] exp(-a/a₀) M^β
+  
+  La perturbazione:
+  - Si accende quando le stelle sono VICINE (exp(-a/a₀) → 1)
+  - Si spegne quando sono LONTANE (exp(-a/a₀) → 0)
+  - Dipende dalla MASSA relativa (4q/(1+q)²)
+  
+  GALASSIE: stessa logica. A ogni raggio r, le stelle locali perturbano
+  il vortice. La perturbazione dipende da:
+  - Quanto è densa la materia stellare a quel raggio (= v_bar(r))
+  - Quanto conta rispetto al vortice (= rapporto v_bar/v_vortex)
+  - Si accende nelle regioni dense (centro) e si spegne nelle regioni
+    vuote (periferia o galassie nane)
+  
+  Modello: il raggio effettivo del core del vortice viene MODIFICATO
+  localmente dalla densità stellare:
+  
+  r_c_eff(r) = r_c₀ × [1 + η × w(r)]
+  
+  dove w(r) è la funzione peso = v²_bar(r) / v²_vortex(r)
+  
+  - Nelle nane: v_bar piccolo ovunque → w(r) ≈ 0 → r_c_eff = r_c₀ (vortice puro)
+  - Nelle massive, al centro: v_bar grande → w(r) >> 0 → r_c allargato
+  - Nelle massive, al bordo: v_bar cala → w(r) → 0 → vortice puro
+
+
+──────────────────────────────────────────────────────────────────────
+MODELLO A: Perturbazione locale del core
+   r_c_eff(r) = C × Rd × [1 + η × (v_bar(r)/V_flat)²]
+──────────────────────────────────────────────────────────────────────
+
+Grid search...
+
+  r_c_eff(r) = 5.03 × R_disk × [1 + 1.093 × (v_bar(r)/V_flat)²]
+  Parametri globali: 2 (C=5.03, η=1.093)
+  RMSE = 25.26 km/s
+  Miglioramento: 2.45x
+
+──────────────────────────────────────────────────────────────────────
+MODELLO B: Interferenza stellare completa
+   v²_tot = v²_bar×(1+ε_PDMF) + v²_vortex × Ψ_gal(r)
+   Ψ_gal(r) = 1 + η × (v_bar/V_flat)^α × exp(-r/r_scale)
+──────────────────────────────────────────────────────────────────────
+
+Grid search...
+
+  v²_tot = v²_bar(1+ε) + v²_vortex × Ψ(r)
+  Ψ(r) = 1 + 7.050 × (v_bar/V_flat)^0.00 × exp(-r/1.67×Rd)
+  r_c = 10.31 × R_disk
+  Parametri globali: 4 (C, η, α_w, r_frac)
+  RMSE = 22.16 km/s
+  Miglioramento: 2.80x
+
+──────────────────────────────────────────────────────────────────────
+MODELLO C: Funzione peso con soglia (come w(M) per le binarie)
+   Il peso si 'accende' quando la densità barionica supera una soglia
+   e si 'spegne' sotto — esattamente come w(M) = exp(-|M/M☉-1|)
+──────────────────────────────────────────────────────────────────────
+
+Grid search...
+
+  r_c_eff(r) = 4.42 × Rd × [1 + 0.81 × w(r)]
+  w(r) = 1 - exp(-(v_bar(r)/72)²)
+  Soglia v_threshold = 72 km/s
+  Parametri globali: 3 (C, η, v_threshold)
+  RMSE = 25.16 km/s
+  Miglioramento: 2.46x
+
+  INTERPRETAZIONE FISICA:
+  
+  La soglia v_threshold = 72 km/s è la velocità barionica
+  sopra la quale le stelle perturbano significativamente il vortice.
+  
+  - Nane (v_bar ~ 20-50 km/s): w ≈ 0.158 → perturbazione quasi OFF
+  - Spirali medie (v_bar ~ 100 km/s): w ≈ 0.852 → perturbazione parziale  
+  - Spirali massive (v_bar ~ 200 km/s): w ≈ 1.000 → perturbazione piena
+
+
+======================================================================
+PRESTAZIONI PER TIPO MORFOLOGICO
+======================================================================
+
+  Tipo Nome   N │ RMSE_CST RMSE_bar │   Migl
+  ────────────────────────────────────────────────
+     0   S0   3 │     28.3     82.0 │   3.0x
+     1   Sa   3 │     22.4     52.0 │   1.6x
+     2  Sab   9 │     24.7     72.0 │   2.6x
+     3   Sb  11 │     35.4     59.4 │   1.9x
+     4  Sbc  17 │     24.6     53.5 │   2.5x
+     5   Sc  14 │     23.0     55.7 │   2.4x
+     6  Scd  16 │     17.5     49.7 │   3.0x
+     7   Sd  14 │      8.9     43.4 │   3.9x
+     8  Sdm   6 │     13.1     40.6 │   3.2x
+     9   Sm  19 │     10.3     34.6 │   3.2x
+    10   Im  16 │      7.4     24.8 │   3.2x
+    11  BCD   1 │     23.7     53.4 │   2.2x
+
+
+======================================================================
+TABELLA COMPARATIVA FINALE — TUTTI I MODELLI
+======================================================================
+
+  Modello                                   Par   RMSE    Migl.  Note
+  ──────────────────────────────────────────────────────────────────────
+  Solo barioni                               0    61.9    1.0x   baseline
+  MOND (a₀)                                  1    ~25     ~2.5x  1 param fenomenologico
+  CST semplice: rc=C×Rd                      1    25.6    2.4x   1 param universale
+  CST locale-A: rc_eff = C×Rd×[1+η×(vb/Vf)²] 2   25.3    2.5x   perturbazione proporzionale
+  CST soglia-C: rc_eff + w(v_bar)            3    25.2    2.5x   con soglia di attivazione
+  CST interf-B: Ψ(r) completa               4    22.2    2.8x   interferenza completa
+  CST fit individuale                      258    18.4    3.4x   benchmark (overfitting)
+  
+  
+  FORMULA FISICA COMPLETA DEL MODELLO CST GALATTICO:
+  ═══════════════════════════════════════════════════
+  
+  v²_tot(r) = v²_bar(r) × (1 + ε_PDMF) + v²_vortice(r)
+  
+  dove:
+    v_vortice(r) = V_flat × LO(r / r_c_eff(r))
+    r_c_eff(r) = C × R_disk × [1 + η × w(r)]
+    w(r) = 1 - exp(-(v_bar(r) / v_th)²)
+    
+    ε_PDMF = 0.215  (calcolato dalla popolazione stellare)
+    C = 4.42        (dimensione base del vortice in unità di R_disk)
+    η = 0.81        (intensità della perturbazione stellare)
+    v_th = 72 km/s  (soglia di attivazione della perturbazione)
+    
+  SIGNIFICATO FISICO:
+  - Il vortice SMBH ha un core di raggio ~ 4×R_disk
+  - Dove la materia barionica è densa (v_bar > 72 km/s), le stelle
+    perturbano il vortice e ne allargano il core di un fattore 1+η
+  - Dove la materia è rarefatta (nane, periferia), il vortice è "puro"
+  
+  Questa è la STESSA struttura dell'interferenza binaria:
+    Binarie: Ψ = 1 + γ₀ × (fattore massa) × exp(-a/a₀)
+    Galassie: w = 1 - exp(-(v_bar/v_th)²)
+  
+  In entrambi i casi: una funzione che si accende quando la materia
+  è vicina e intensa, e si spegne quando è lontana o rarefatta.
+

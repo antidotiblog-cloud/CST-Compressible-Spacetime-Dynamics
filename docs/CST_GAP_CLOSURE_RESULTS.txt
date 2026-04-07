@@ -1,0 +1,132 @@
+======================================================================
+STEP 1: DIAGNOSTICA DETTAGLIATA DEL MODELLO F
+======================================================================
+
+Residui medi per intervallo di r/Rd:
+        r/Rd      N   <resid>       σ        Bias
+  [ 0, 1)       667     -7.92   27.68        OVER
+  [ 1, 2)       586     +3.49   21.34       UNDER
+  [ 2, 3)       438     -0.83   18.22          OK
+  [ 3, 5)       494     -1.69   14.48          OK
+  [ 5, 8)       418     -0.85   10.82          OK
+  [ 8,15)       284     +0.51    7.58          OK
+  [15,50)        44     -5.73    6.89        OVER
+
+Residui medi per range di V_flat:
+  Vf [  0, 80): N= 481, <resid>= +1.15, σ= 7.70
+  Vf [ 80,130): N= 727, <resid>= +4.59, σ=12.90
+  Vf [130,200): N= 740, <resid>= -8.92, σ=20.01
+  Vf [200,350): N= 983, <resid>= -2.21, σ=25.13
+
+
+======================================================================
+STEP 2: β_gal FISSATO A 2/3 (predizione teorica)
+======================================================================
+
+  Con β_gal = 2/3 FISSO (4 parametri liberi):
+  Ψ = 1 + 276.3 × [4q/(1+q)²]^0.45 × exp(-r/2.58×Rd) × (M_BH/10⁷)^(2/3)
+  r_c = 18.6 × Rd
+  RMSE = 20.06 km/s (miglioramento: 3.09x)
+  vs β_gal libero (0.258): RMSE = 19.78 km/s
+  Differenza: +0.28 km/s
+
+
+======================================================================
+STEP 3: BULGE come perturbazione separata dal disco
+======================================================================
+
+  La diagnostica mostra che i peggiori errori sono nelle galassie 
+  con bulge massiccio (Sb, Sa). Il bulge è una popolazione stellare
+  DIVERSA dal disco: concentrata, sferoidale, spessa.
+  
+  Idea: il bulge perturba il vortice in modo diverso dal disco.
+  Il disco è piatto come il vortice (coplanare → perturbazione minima).
+  Il bulge è sferico → interseca il piano del vortice → perturbazione forte.
+
+Grid search modello G (5 param: C, γ, p, r₀, η_bul)...
+
+  Modello G — con perturbazione bulge separata:
+  r_c_eff = 18.5×Rd × [1 + 0.09 × f_bulge(r)]
+  Ψ = 1 + 267.3 × [4q/(1+q)²]^0.44 × exp(-r/2.6×Rd) × (M_BH/10⁷)^(2/3)
+  β_gal = 2/3 (fisso)
+  Parametri: 5 (C, γ, p, r₀, η_bul)
+  RMSE = 19.98 km/s
+  Miglioramento: 3.10x
+
+  Per tipo morfologico:
+  Tipo   N   RMSE RMSE_bar   Migl
+    S0   3   12.4     82.0   5.4x
+    Sa   3   23.4     52.0   1.5x
+   Sab   9   22.7     72.0   3.5x
+    Sb  11   24.4     59.4   3.5x
+   Sbc  17   16.8     53.5   3.1x
+    Sc  14   18.4     55.7   3.0x
+   Scd  16   10.0     49.7   4.4x
+    Sd  14    9.4     43.4   4.0x
+   Sdm   6   11.3     40.6   3.4x
+    Sm  19   11.2     34.6   2.9x
+    Im  16    8.1     24.8   2.8x
+   BCD   1   12.6     53.4   4.2x
+
+
+======================================================================
+STEP 4: CROSS-VALIDATION 5-FOLD
+======================================================================
+
+  5-fold cross-validation:
+    Fold 1: train=19.38, test=24.28 km/s  (N_test=26)
+    Fold 2: train=20.78, test=15.80 km/s  (N_test=26)
+    Fold 3: train=20.64, test=18.04 km/s  (N_test=26)
+    Fold 4: train=20.01, test=19.87 km/s  (N_test=26)
+    Fold 5: train=19.19, test=22.71 km/s  (N_test=25)
+
+  Media train: 20.00 ± 0.64 km/s
+  Media test:  20.14 ± 3.07 km/s
+  Differenza:  +0.14 km/s
+  → NO overfitting
+
+
+======================================================================
+TABELLA FINALE — MODELLO CST GALATTICO OTTIMIZZATO
+======================================================================
+
+  ══════════════════════════════════════════════════════════════════
+  FORMULA CST GALATTICA COMPLETA (Modello G)
+  ══════════════════════════════════════════════════════════════════
+  
+  v²_tot(r) = v²_bar(r) × (1 + ε_PDMF) + v²_vortice(r) × Ψ_gal(r)
+  
+  v_vortice(r) = V_flat × LO(r / r_c_eff(r))
+  
+  r_c_eff(r) = C × R_disk × [1 + η_bul × f_bul(r)]
+  f_bul(r) = v²_bul(r) / v²_bar(r)
+  
+  Ψ_gal(r) = 1 + γ × [4q/(1+q)²]^p × exp(-r/r₀×R_disk) × (M_BH/10⁷)^(2/3)
+  q(r) = M_bar(<r) / M_BH
+  
+  PARAMETRI:
+    Fissi (dalla teoria):
+      ε_PDMF = 0.215 (popolazione stellare)
+      β_gal  = 2/3   (esponente universale CST)
+      v_max  = V_flat (il vortice è la curva piatta)
+    
+    Globali (5, fittati su 129 galassie):
+      C      = 18.5   (raggio core vortice in unità di Rd)
+      γ      = 267.3  (intensità interferenza stellare)
+      p      = 0.44  (esponente rapporto massa)
+      r₀     = 2.6   (scala radiale interferenza in unità di Rd)
+      η_bul  = 0.09  (perturbazione aggiuntiva del bulge)
+    
+    Per galassia: ZERO
+  
+  RISULTATO:
+    RMSE = 19.98 km/s  (miglioramento 3.10x vs barioni)
+    Cross-validation: train 20.0 ± 0.6, test 20.1 ± 3.1
+    
+  CONFRONTO:
+    Solo barioni:       61.9 km/s (1.0x)
+    MOND (1 param):     ~25  km/s (~2.5x)
+    CST-G (5 param):    20.0 km/s (3.1x)
+    CST individuale:    18.4 km/s (3.4x)  [258 param]
+  ══════════════════════════════════════════════════════════════════
+

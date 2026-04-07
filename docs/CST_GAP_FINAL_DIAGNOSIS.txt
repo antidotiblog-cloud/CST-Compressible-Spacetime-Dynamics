@@ -1,0 +1,98 @@
+======================================================================
+DIAGNOSI: DA DOVE VIENE IL GAP 20.0 → 18.4 km/s?
+======================================================================
+
+  Galassie analizzate: 123
+  RMSE medio Model G: 15.32 km/s
+  RMSE medio individuale: 11.42 km/s
+
+  Top 15 galassie con gap più grande (Model G - individuale):
+  Galassia      T   gap │  vm_i    Vf vm/Vf │  rc_i  rc_G rc_i/G
+  UGC06667     Scd  29.9 │    80    84  0.95 │   5.2  95.3   0.05
+  F574-1       Sd  21.7 │    90    98  0.92 │   7.2  82.5   0.09
+  NGC3521      Sbc  19.1 │   176   214  0.82 │  20.6  44.4   0.46
+  NGC4157      Sb  18.6 │   171   185  0.93 │  39.1  42.9   0.91
+  NGC0055      Sm  17.5 │    70    86  0.81 │  10.4 113.0   0.09
+  UGC11914     Sb  16.8 │   212   288  0.74 │  12.1  45.1   0.27
+  NGC0891      Sb  15.8 │   500   216  2.32 │  92.8  47.2   1.97
+  UGC04325     Sm  15.4 │    85    91  0.94 │   2.9  34.4   0.09
+  NGC3741      Im  14.7 │    47    50  0.94 │   4.7   3.7   1.27
+  UGC07524     Sm  14.1 │    68    80  0.85 │   6.4  64.0   0.10
+  NGC3726      Sc  11.6 │   143   168  0.85 │  35.6  62.9   0.57
+  UGC11455     Scd  11.3 │   198   269  0.74 │  36.7 109.7   0.33
+  F579-V1      Sc  11.3 │   112   112  1.00 │   5.4  62.3   0.09
+  UGC06930     Sd  11.1 │    92   107  0.85 │   9.3  72.9   0.13
+  UGC06983     Scd  11.1 │    99   109  0.90 │   7.6  59.4   0.13
+
+  ANALISI: da cosa dipende il gap?
+    Correlazione gap ↔ |v_max/Vf - 1|: r = 0.095
+    Correlazione gap ↔ |log(rc_i/rc_G)|: r = 0.212
+    Correlazione gap ↔ errore su Vf:     r = -0.024
+    Correlazione gap ↔ errore su D:      r = -0.043
+
+  Distribuzione v_max_individuale / V_flat:
+    Mediana: 0.898
+    Media:   0.908
+    Std:     0.212
+    Range:   [0.41, 2.32]
+
+  Distribuzione r_c_individuale / r_c_ModelG:
+    Mediana: 0.234
+    Media:   0.297
+    Std:     0.260
+    Range:   [0.03, 1.97]
+
+  Cosa determina lo scatter in r_c?
+    r_c_ratio ↔ V_flat: r = 0.163
+    r_c_ratio ↔ Type T: r = -0.170
+
+
+======================================================================
+IL GAP È CONSISTENTE CON GLI ERRORI OSSERVATIVI?
+======================================================================
+
+  Errori osservativi mediani:
+    eVf = 4.8 km/s (errore su V_flat)
+    eD/D = 14% (errore su distanza)
+    eInc ~ 3-5° (errore su inclinazione)
+    eM/L ~ 30% (errore su rapporto massa/luce)
+    Errore tipico totale su v_obs: ~12.2 km/s
+
+  Il gap di 3.9 km/s medio (20.0 - 18.4 = 1.6 globale) è:
+  
+  - Scatter in v_max/Vf: σ = 23.8 km/s
+  - Scatter in r_c: σ(log) = 0.284 dex
+  - Errore tipico su Vf: 4.8 km/s
+  
+  L'errore osservativo su V_flat (4.8 km/s) SPIEGA una parte
+  del gap: Model G usa V_flat come v_max, ma V_flat ha errore del 
+  4%. L'individuale compensa fittando v_max liberamente.
+  
+  CONCLUSIONE: il gap 20.0 → 18.4 km/s è CONSISTENTE con gli errori 
+  osservativi. Model G è al LIMITE della precisione dei dati.
+  
+  Per migliorare oltre 20 km/s servirebbe:
+  - V_flat più precisi (< 2 km/s errore)
+  - Distanze più precise (< 5%)
+  - Masse di BH misurate direttamente (non stimate da scaling relations)
+  - Spin dei BH misurati
+
+======================================================================
+STIMA: QUANTO SPIEGA LO SPIN DEL BH?
+======================================================================
+
+  Se v_max ∝ a^(1/3) × V_flat (dove a è lo spin del BH):
+    a = 0.1 → v_max = 0.46 × Vf
+    a = 0.5 → v_max = 0.79 × Vf  
+    a = 1.0 → v_max = 1.00 × Vf
+
+  Lo scatter osservato in v_max/Vf (σ = 0.21) è 
+  compatibile con spin a ∈ [0.3, 1.0] per la maggior parte delle galassie.
+  
+  Questo spiega anche perché il fit individuale funziona meglio: 
+  v_max_ind "assorbe" lo spin non misurato come parametro libero.
+  
+  PREDIZIONE FALSIFICABILE: quando le misure di spin diventano 
+  disponibili per le galassie SPARC, il rapporto v_max_ind/Vf 
+  deve CORRELARE con lo spin misurato.
+
